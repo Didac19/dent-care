@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, TableInheritance } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Patient } from '../../patients/entities/patient.entity';
+import { Dentist } from '../../dentists/entities/dentist.entity';
+import { Secretary } from 'src/secretary/entities/secretary.entity';
 
 
-@Entity('Users')
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+@Entity('user')
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
@@ -47,6 +48,8 @@ export class User {
     @OneToOne(() => Patient, (patient) => patient.user, { cascade: true, onDelete: 'CASCADE' })
     patient: Patient;
 
-    // @OneToOne(() => Dentist, (dentist) => dentist.user, { cascade: true })
-    // dentist: Dentist;
+    @OneToOne(() => Dentist, (dentist) => dentist.user, { cascade: true })
+    dentist: Dentist;
+    @OneToOne(() => Secretary, (secretary) => secretary.user, { cascade: true })
+    secretary: Secretary;
 }

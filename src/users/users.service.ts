@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Patient } from '../patients/entities/patient.entity';
-// import { Dentist } from '../dentists/entities/dentist.entity';
+import { Dentist } from '../dentists/entities/dentist.entity';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +15,7 @@ export class UsersService {
   async createUserWithPatient(userData: Partial<User>, patientData: Partial<Patient>): Promise<User> {
     const user = this.userRepository.create({
       ...userData,
-      type: 'Patient', // Set the type column to 'patient'
+      type: 'patient', // Set the type column to 'patient'
     });
     const patient = new Patient();
     Object.assign(patient, patientData);
@@ -23,13 +23,13 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  // async createUserWithDentist(userData: Partial<User>, dentistData: Partial<Dentist>): Promise<User> {
-  //   const user = this.userRepository.create(userData);
-  //   const dentist = new Dentist();
-  //   Object.assign(dentist, dentistData);
-  //   user.dentist = dentist;
-  //   return this.userRepository.save(user);
-  // }
+  async createUserWithDentist(userData: Partial<User>, dentistData: Partial<Dentist>): Promise<User> {
+    const user = this.userRepository.create(userData);
+    const dentist = new Dentist();
+    Object.assign(dentist, dentistData);
+    user.dentist = dentist;
+    return this.userRepository.save(user);
+  }
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find({ relations: ['patient'] });

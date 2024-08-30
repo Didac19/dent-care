@@ -6,10 +6,15 @@ import { User } from './entities/user.entity';
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  @Post()
-  create(@Body() createUserDto: Partial<User>): Promise<User> {
+  @Post('patient')
+  createPatient(@Body() createUserDto: Partial<User>): Promise<User> {
     const { patient, ...userData } = createUserDto;
     return this.usersService.createUserWithPatient(userData, patient);
+  }
+  @Post('dentist')
+  createDentist(@Body() createUserDto: Partial<User>): Promise<User> {
+    const { dentist, ...userData } = createUserDto;
+    return this.usersService.createUserWithDentist(userData, dentist);
   }
 
   @Get()
