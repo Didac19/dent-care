@@ -1,29 +1,29 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
-import { PatientsModule } from './patients/patients.module';
-import { DentistsModule } from './dentists/dentists.module';
-import { ConsultTypeModule } from './consult_type/consult_type.module';
-import { SecretaryModule } from './secretary/secretary.module';
 import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'dental_care',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // This automatically syncs the schema to your database
+    ConfigModule.forRoot({
+      isGlobal: true, // Makes the ConfigModule globally available
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: configService.get<string>('DB_TYPE') as 'aurora-mysql' | 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'oracle' | 'mongodb',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASS'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true, // This automatically syncs the schema to your database
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
-    PatientsModule,
-    DentistsModule,
-    ConsultTypeModule,
-    SecretaryModule,
     AppointmentModule,
   ],
 })
