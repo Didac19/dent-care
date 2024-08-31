@@ -24,7 +24,7 @@ export class User {
     @Column()
     role: number;
 
-    @Column({ default: 'uncompleted' })
+    @Column({ default: 'incomplete' })
     status: string;
 
     @Column({ nullable: true })

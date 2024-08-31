@@ -57,7 +57,7 @@ export class Patient {
     @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
     updatedAt: Date;
 
-    @OneToOne(() => User, (user) => user.patient)
-    @JoinColumn()
+    @OneToOne(() => User, (user) => user.patient, { onDelete: 'CASCADE' })
+    @JoinColumn({})
     user: User;
 }

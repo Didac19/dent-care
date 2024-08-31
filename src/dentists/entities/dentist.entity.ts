@@ -12,7 +12,7 @@ export class Dentist {
     @Column({ type: 'varchar', length: 255, name: 'last_name' })
     lastName: string;
 
-    @Column({ type: 'varchar', length: 255, name: 'phone_number' })
+    @Column({ type: 'varchar', length: 255, name: 'phone_number', nullable: true })
     phoneNumber: string;
 
 
