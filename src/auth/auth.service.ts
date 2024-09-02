@@ -15,9 +15,13 @@ export class AuthService {
         pass: string,
     ): Promise<{ access_token: string }> {
         const user = await this.usersService.findByEmail(email);
+        console.log(email, pass);
+
         if (!user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException({ message: 'User not found' });
         }
+        console.log(user);
+
         const isPasswordValid = await bcrypt.compare(pass, user.password);
         if (!isPasswordValid) {
             throw new UnauthorizedException({ message: 'Invalid password' });
