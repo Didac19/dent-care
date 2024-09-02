@@ -6,8 +6,8 @@ import { Patient } from '../patients/entities/patient.entity';
 import { Dentist } from '../dentists/entities/dentist.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 const saltOrRounds = 10;
-const password = 'random_password';
 
 
 @Injectable()
@@ -15,6 +15,10 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Dentist)
+    private readonly dentistRepository: Repository<Dentist>,
+    @InjectRepository(Patient)
+    private readonly patientRepository: Repository<Patient>,
   ) { }
 
   async createUserWithPatient(userDto: CreateUserDto): Promise<User> {
@@ -52,7 +56,7 @@ export class UsersService {
   async findOne(id: number): Promise<User> {
     return this.userRepository.findOne({
       where: { id },
-      relations: ['patient'],
+      relations: ['patient', 'dentist'],
     });
   }
   async findByEmail(email: string): Promise<User> {
@@ -60,5 +64,42 @@ export class UsersService {
       where: { email },
       relations: ['patient'],
     });
+  }
+  async update(id: number, userDto: UpdateUserDto): Promise<User> {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    if (user.patient) {
+      user.patient.birthday = userDto.birthDay;
+      try {
+        await this.patientRepository.update(user.patient.id, user.patient);
+      }
+      catch (error) {
+        console.log(error);
+
+      }
+    }
+
+
+    if (user.dentist !== null) {
+      user.dentist.birthday = userDto.birthDay;
+      try {
+        await this.dentistRepository.update(user.dentist.id, user.dentist);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    const hashedPassword = await bcrypt.hash(userDto.password, saltOrRounds);
+    userDto.password = hashedPassword;
+    const { birthDay, ...userDtoWithoutBirthDay } = userDto;
+
+    try {
+      await this.userRepository.update(id, userDtoWithoutBirthDay);
+    } catch (error) {
+      console.log(error);
+    }
+    return this.findOne(id);
   }
 }

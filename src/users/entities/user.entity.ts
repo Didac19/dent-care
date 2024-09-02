@@ -21,9 +21,6 @@ export class User {
     @Column()
     password: string;
 
-    @Column()
-    role: number;
-
     @Column({ default: 'incomplete' })
     status: string;
 
@@ -44,6 +41,15 @@ export class User {
 
     @Column()
     type: string;
+
+    @Column({ nullable: true })
+    bio: string;
+
+    @Column({ nullable: true })
+    avatar: string;
+
+    @Column({ nullable: true })
+    address: string;
 
     @OneToOne(() => Patient, (patient) => patient.user, { cascade: true, onDelete: 'CASCADE' })
     patient: Patient;
