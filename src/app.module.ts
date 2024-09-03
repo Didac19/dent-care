@@ -4,6 +4,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { AuthModule } from './auth/auth.module';
+import { DentalClinicModule } from './dental_clinic/dental_clinic.module';
+import { ScheduleModule } from './schedule/schedule.module';
+import { WorkingDayModule } from './working_day/working_day.module';
+import { OdontogramModule } from './odontogram/odontogram.module';
+import { ToothModule } from './tooth/tooth.module';
+import { TreatmentModule } from './treatment/treatment.module';
+import { DiagnoseModule } from './diagnose/diagnose.module';
+import { ToothStateModule } from './tooth_state/tooth_state.module';
+import { ToothSurfaceModule } from './tooth_surface/tooth_surface.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { InventoryItemsModule } from './inventory_items/inventory_items.module';
 
 @Module({
   imports: [
@@ -27,6 +38,17 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     AppointmentModule,
     AuthModule,
+    DentalClinicModule,
+    ScheduleModule,
+    WorkingDayModule,
+    OdontogramModule,
+    ToothModule,
+    TreatmentModule,
+    DiagnoseModule,
+    ToothStateModule,
+    ToothSurfaceModule,
+    InventoryModule,
+    InventoryItemsModule,
   ],
 })
 export class AppModule { }

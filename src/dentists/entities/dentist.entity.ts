@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { DentalClinic } from 'src/dental_clinic/entities/dental_clinic.entity';
 
 @Entity('dentist')
 export class Dentist {
@@ -25,7 +26,10 @@ export class Dentist {
     @UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at' })
     updatedAt: Date;
 
-    @ManyToOne(() => User, user => user.dentist, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'user_id' })
+    @OneToOne(() => User, (user) => user.dentist, { onDelete: 'CASCADE' })
+    @JoinColumn({})
     user: User;
+
+    @ManyToOne(() => DentalClinic, (clinic) => clinic.dentists)
+    clinic: DentalClinic
 }

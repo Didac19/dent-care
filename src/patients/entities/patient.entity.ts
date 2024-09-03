@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { DentalClinic } from 'src/dental_clinic/entities/dental_clinic.entity';
 
 @Entity('patient')
 export class Patient {
@@ -60,4 +61,7 @@ export class Patient {
     @OneToOne(() => User, (user) => user.patient, { onDelete: 'CASCADE' })
     @JoinColumn({})
     user: User;
+
+    @ManyToOne(() => DentalClinic, (clinic) => clinic.patients)
+    clinic: DentalClinic
 }
