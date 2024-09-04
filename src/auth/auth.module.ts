@@ -4,9 +4,15 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PatientsService } from 'src/patients/patients.service';
+import { DentistsService } from 'src/dentists/dentists.service';
+import { PatientsModule } from 'src/patients/patients.module';
+import { DentistsModule } from 'src/dentists/dentists.module';
 
 @Module({
   imports: [
+    PatientsModule, DentistsModule,
     UsersModule,
     JwtModule.register({
       global: true,
@@ -14,8 +20,8 @@ import { jwtConstants } from './constants';
       signOptions: { expiresIn: '60m' },
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, PatientsService, DentistsService],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, PatientsService, DentistsService],
 })
 export class AuthModule { }

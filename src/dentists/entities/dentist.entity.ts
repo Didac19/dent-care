@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne, Timestamp } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { DentalClinic } from 'src/dental_clinic/entities/dental_clinic.entity';
 
@@ -17,7 +17,7 @@ export class Dentist {
     phoneNumber: string;
 
 
-    @Column({ type: 'timestamp with time zone', nullable: true })
+    @Column({ nullable: true, type: 'timestamp' })
     birthday: Date;
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

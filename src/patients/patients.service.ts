@@ -20,4 +20,15 @@ export class PatientsService {
       relations: ['user'],
     });
   }
+  async findByClinic(id: number): Promise<Patient[]> {
+    return this.patientRepository.find({
+      where: { clinic: { id: id } },
+      relations: ['user', 'clinic'],
+    });
+  }
+  async findByUser(user_id: number): Promise<Patient> {
+    return this.patientRepository.findOne({
+      where: { user: { id: user_id } }, relations: ['clinic']
+    });
+  }
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, Timestamp } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { DentalClinic } from 'src/dental_clinic/entities/dental_clinic.entity';
 
@@ -25,8 +25,11 @@ export class Patient {
     @Column({ nullable: true })
     gender: string;
 
-    @Column({ type: 'timestamptz', nullable: true })
+    @Column({ nullable: true, type: 'timestamp' })
     birthday: Date;
+
+    @Column({ nullable: true, type: 'timestamp' })
+    lastVisit: Date;
 
     @Column({ nullable: true, name: 'special_notes' })
     specialNotes: string;
