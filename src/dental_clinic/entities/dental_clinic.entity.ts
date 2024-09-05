@@ -20,6 +20,9 @@ export class DentalClinic {
     @Column()
     email: string
 
+    @Column({ name: 'max_appointments', nullable: true })
+    maxAppointments: number
+
     @OneToMany(() => Patient, (patient) => patient.clinic)
     patients: Patient[]
 
